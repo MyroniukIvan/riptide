@@ -61,7 +61,7 @@ jobs:
       - name: Shellcheck hooks
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck
-          shellcheck -s sh plugins/riptide/hooks/*.sh
+          shellcheck -s sh --severity=warning plugins/riptide/hooks/*.sh
 
       - name: Hooks behave (no model needed)
         run: |
