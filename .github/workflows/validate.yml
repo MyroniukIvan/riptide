@@ -1,0 +1,81 @@
+# Static gate for the harness itself. No model, no network, no cost — which is
+# exactly why it is safe to require. It catches the regressions that otherwise
+# surface as "the agent stopped doing that thing".
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint skills
+        run: node plugins/riptide/skills/skill-forge/scripts/lint-skills.mjs plugins/riptide/skills
+
+      - name: Validate JSON manifests
+        run: |
+          for f in .claude-plugin/marketplace.json \
+                   plugins/riptide/.claude-plugin/plugin.json \
+                   plugins/riptide/hooks/hooks.json \
+                   templates/settings.json; do
+            node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" && echo "ok  $f"
+          done
+
+      - name: Check agent frontmatter
+        run: |
+          node -e '
+          const fs = require("node:fs");
+          let failed = false;
+          for (const f of fs.readdirSync("plugins/riptide/agents").sort()) {
+            const p = `plugins/riptide/agents/${f}`;
+            const stem = f.replace(/\.md$/, "");
+            const text = fs.readFileSync(p, "utf8");
+            const end = text.indexOf("\n---", 3);
+            if (!text.startsWith("---") || end === -1) {
+              console.log(`FAIL ${p}: missing or unterminated frontmatter`); failed = true; continue;
+            }
+            const fm = text.slice(3, end);
+            for (const field of ["name:", "description:"]) {
+              if (!new RegExp(`^${field}`, "m").test(fm)) { console.log(`FAIL ${p}: missing ${field}`); failed = true; }
+            }
+            const m = /^name:\s*(\S+)/m.exec(fm);
+            if (m && m[1] !== stem) { console.log(`FAIL ${p}: name '${m[1]}' != filename '${stem}'`); failed = true; }
+            if (!failed) console.log(`ok   ${p}`);
+          }
+          process.exit(failed ? 1 : 0);
+          '
+
+      - name: Shellcheck hooks
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck
+          shellcheck -s sh plugins/riptide/hooks/*.sh
+
+      - name: Hooks behave (no model needed)
+        run: |
+          chmod +x plugins/riptide/hooks/*.sh
+          set -e
+          out=$(echo '{"tool_name":"Bash","tool_input":{"command":"git reset --hard"}}' \
+                | plugins/riptide/hooks/guard.sh)
+          echo "$out" | grep -q '"permissionDecision":"deny"' || { echo "guard failed to block"; exit 1; }
+          echo '{"tool_name":"Bash","tool_input":{"command":"npm test"}}' \
+                | plugins/riptide/hooks/guard.sh | grep -q deny && { echo "guard over-blocked"; exit 1; }
+          echo "hooks ok"
+
+      - name: Eval harness template typechecks
+        working-directory: plugins/riptide/skills/eval-harness/templates
+        run: |
+          npm install --silent --no-audit --no-fund
+          npx tsc --noEmit

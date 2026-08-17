@@ -1,0 +1,35 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/guard.sh",
+            "timeout": 10,
+            "statusMessage": "Checking for destructive commands"
+          },
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/ship-gate.sh",
+            "if": "Bash(gh pr create*)",
+            "timeout": 15,
+            "statusMessage": "Checking the pre-PR gate"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/capture-insights.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

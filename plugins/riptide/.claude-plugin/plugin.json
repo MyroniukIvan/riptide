@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "riptide",
+  "displayName": "Riptide",
+  "version": "0.1.0",
+  "description": "Engineering harness for TypeScript and JavaScript repos: plan → implement → verify → review → ship, plus an eval harness for AI features and cost control by default. No setup step.",
+  "author": {
+    "name": "Ivan Myroniuk"
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "workflow",
+    "planning",
+    "code-review",
+    "evals",
+    "cost-optimization",
+    "tdd"
+  ],
+  "hooks": "./hooks/hooks.json"
+}

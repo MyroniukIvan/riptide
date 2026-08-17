@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "riptide",
+  "description": "Riptide — an internal engineering harness for TypeScript and JavaScript projects: plan → implement → verify → review → ship, with evals for AI features and cost control by default.",
+  "owner": {
+    "name": "Ivan Myroniuk"
+  },
+  "plugins": [
+    {
+      "name": "riptide",
+      "source": "./plugins/riptide",
+      "displayName": "Riptide",
+      "description": "Engineering harness for TS/JS repos: 5 agents, 12 skills, 3 guardrail hooks. No setup step — reads package.json, your lockfile, and CLAUDE.md.",
+      "category": "engineering",
+      "keywords": [
+        "workflow",
+        "planning",
+        "code-review",
+        "evals",
+        "cost-optimization",
+        "tdd"
+      ],
+      "license": "UNLICENSED",
+      "author": {
+        "name": "Ivan Myroniuk"
+      }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+[
+  {
+    "name": "example",
+    "artifact": "./cases/example/artifact.md",
+    "kind": "prompt",
+    "note": "Sample surface so a fresh copy passes the gate and runs end to end. Replace with this project's real AI surfaces — every entry needs a case file under cases/<name>/, which is what the gate enforces."
+  }
+]
