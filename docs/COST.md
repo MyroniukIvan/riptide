@@ -19,17 +19,12 @@ That is three or four small reads. The failure mode this avoids is an agent
 exploring the repo to work out how to run the tests — which costs thousands of
 tokens and still gets it wrong often enough to matter.
 
-If a fact is genuinely non-obvious and keeps being re-derived, that is what
-`INSIGHTS.md` is for. Write it once.
-
 ## 2. Keep `CLAUDE.md` a pointer map
 
 `CLAUDE.md` is loaded before every turn, on every request, for the life of the
 project. A 5,000-token instruction file costs 5,000 tokens before you have typed
 anything.
 
-- **Facts that agents need sometimes** → `INSIGHTS.md`, read only when solving
-  something non-obvious.
 - **Procedures** → a skill. A skill's body loads only when it fires; until then
   it costs its description line.
 - **Pointers** → `CLAUDE.md`. Target under ~400 tokens.
@@ -111,8 +106,9 @@ When a cap is hit, the user decides. That is deliberate.
 
 ## 9. Model tiering
 
-Riptide's agents default to Sonnet, with `effort: low` on `plan-verifier`, the
-most mechanical of them. Adjust to taste:
+Riptide's agents default to Sonnet — except `planner`, which runs on Fable
+because a bad plan costs a whole implementation cycle — with `effort: low` on
+`plan-verifier`, the most mechanical of them. Adjust to taste:
 
 - **Planning and structural review** benefit from a stronger model — a bad plan
   costs a whole implementation cycle.

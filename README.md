@@ -2,7 +2,7 @@
 
 An AI-ready engineering harness that drops into any project.
 
-Five agents, twelve skills, three guardrail hooks — a plan → implement → verify
+Five agents, eleven skills, two guardrail hooks — a plan → implement → verify
 → review → ship pipeline for TypeScript and JavaScript projects, with an eval
 harness for AI features and cost control by default.
 
@@ -41,7 +41,6 @@ Nothing is generated ahead of time and nothing is re-derived by guesswork:
 | Package manager | the lockfile |
 | Test conventions | the existing test files next to the code being changed |
 | Contracts | `CLAUDE.md` `## Contracts`, `docs/ARCHITECTURE.md`, `docs/adr/` |
-| Known traps | the nearest `INSIGHTS.md` |
 | Which skills apply to a path | each project skill's own `paths:` frontmatter |
 
 That last row is how you specialise the harness: write a skill for your
@@ -69,7 +68,7 @@ Riptide copy of it.
 **Skills**
 
 Workflow — `plan` · `impl` · `ship` · `retro` · `handoff`
-Discipline — `grill` · `diagnose` · `tdd` · `untangle` · `insights` ·
+Discipline — `grill` · `diagnose` · `tdd` · `untangle` ·
 `skill-forge` · `eval-harness`
 
 **Hooks**
@@ -79,8 +78,6 @@ Discipline — `grill` · `diagnose` · `tdd` · `untangle` · `insights` ·
   Narrow on purpose: a guardrail that fires on ordinary commands gets disabled.
 - `ship-gate` — `gh pr create` requires a `/ship` PASS. Honours a cached verdict
   so the retry goes straight through. `git push` is untouched.
-- `capture-insights` — one prompt per session, and only when the tree is dirty,
-  to record anything a future session would not re-derive.
 
 ## When AI is part of the product
 

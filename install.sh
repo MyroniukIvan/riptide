@@ -43,7 +43,7 @@ for part in agents skills hooks; do
     say "  $part/"
   fi
 done
-run chmod +x "$DEST/hooks/guard.sh" "$DEST/hooks/ship-gate.sh" "$DEST/hooks/capture-insights.sh"
+run chmod +x "$DEST/hooks/guard.sh" "$DEST/hooks/ship-gate.sh"
 
 # --- settings: merge, never clobber ---------------------------------------
 SETTINGS="$DEST/settings.json"
@@ -84,7 +84,7 @@ for (const key of ["deny", "allow", "ask"]) {
 
 if (!target.hooks) {
   target.hooks = template.hooks;
-  added.push("hooks (all three)");
+  added.push("hooks (both)");
 } else {
   added.push("hooks: SKIPPED — you already have a hooks block; merge it by hand from templates/settings.json");
 }
@@ -102,8 +102,6 @@ for (const line of added) console.log(`    + ${line}`);
 ' "$SETTINGS" "$TEMPLATE"
 fi
 
-# --- seed docs, never overwrite -------------------------------------------
-[ -f "$TARGET/INSIGHTS.md" ] || run cp "$SRC/templates/INSIGHTS.md" "$TARGET/INSIGHTS.md"
 
 if [ -z "$DRY" ]; then
   cat <<'EOF'

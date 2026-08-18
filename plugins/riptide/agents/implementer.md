@@ -6,7 +6,7 @@ description: >
   and working tree. Writes only its task's owned paths, loads its task's named
   skills before writing code, and runs the task's verify command to green.
   Returns a report: files changed, skills applied, commands run with results,
-  self-check, insight candidates, and handoff notes.
+  self-check, and handoff notes.
 tools: Read, Write, Edit, Bash, Grep, Glob, Skill
 model: sonnet
 color: green
@@ -44,7 +44,6 @@ If the task has no Skills line, check `.claude/skills/` for any skill whose
 Read, before writing:
 
 - The nearest `CLAUDE.md` / `AGENTS.md` to your owned paths.
-- The nearest `INSIGHTS.md` — these are traps the project already hit.
 - **At least one existing sibling file** doing the same kind of thing. Match its
   structure, naming, error handling, and import style. A change that reads like
   the surrounding code is worth more than a change that is independently
@@ -68,13 +67,7 @@ Write **new** tests only when the task explicitly calls for them; otherwise test
 intents go back to the orchestrator. Never edit a test to make your code pass —
 if an existing test now fails legitimately, that is a report item.
 
-## 5. Do not write INSIGHTS.md
-
-Non-obvious findings go in your report as **Insight candidates**. Parallel
-instances writing one shared file collide, and no task owns it. The orchestrator
-aggregates and writes once.
-
-## 6. Self-check before reporting
+## 5. Self-check before reporting
 
 Confirm each explicitly:
 
@@ -91,9 +84,7 @@ don't run it.
 - **Files changed** — exact paths.
 - **Skills applied** — per file.
 - **Commands run** — with pass/fail and the relevant output.
-- **Self-check** — the §6 list, each item confirmed or explained.
-- **Insight candidates** — non-obvious findings, 1–3 sentences each, with the
-  file they belong to. Or "none".
+- **Self-check** — the §5 list, each item confirmed or explained.
 - **Handoff notes** — anything the orchestrator must do (a migration to
   generate, a contract mirrored, a dependent task now unblocked or blocked).
 - **Stopped early?** — if you stopped, say exactly what blocked you and what

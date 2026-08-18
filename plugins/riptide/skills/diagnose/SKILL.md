@@ -8,9 +8,6 @@ allowed-tools: Read, Grep, Glob, Bash, Edit, Write
 
 A discipline for hard bugs. Skip a phase only with an explicit reason.
 
-Read the nearest `INSIGHTS.md` first — the project may have hit this exact
-failure mode before, and *Recurring errors & fixes* is where that lives.
-
 ## Phase 1 — Build a feedback loop
 
 **This is the skill.** Everything after it is mechanical. With a tight pass/fail
@@ -155,9 +152,6 @@ Before declaring done:
 - [ ] All `[DBG-…]` instrumentation removed (grep the prefix).
 - [ ] Throwaway harnesses deleted or moved somewhere clearly marked.
 - [ ] The hypothesis that turned out correct is stated in the commit message.
-
-Then invoke `insights` if the cause was non-obvious — this is exactly the
-material *Recurring errors & fixes* exists for.
 
 Finally: **what would have prevented this?** If the answer is architectural — no
 test seam, tangled callers, hidden coupling — say so now, after the fix, when

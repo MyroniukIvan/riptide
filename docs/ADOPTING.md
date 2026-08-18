@@ -199,15 +199,9 @@ everything else alone — so keep your project's own skills in
 ## Making it yours
 
 Riptide ships the workflow; your project supplies the domain knowledge, through
-two things:
-
-- **`INSIGHTS.md`** — accumulates what this codebase has already cost you.
-  `/ship` promotes any finding matching an entry to CRITICAL, so a trap only
-  gets past you once.
-- **`skill-forge`** — write project skills for your conventions and your
-  recurring review comments. Scope each one with `paths:` in its frontmatter and
-  `/plan` and `/ship` start consulting it automatically; there is no registry to
-  update.
+`skill-forge` — write project skills for your conventions and your recurring
+review comments. Scope each one with `paths:` in its frontmatter and `/plan` and
+`/ship` start consulting it automatically; there is no registry to update.
 
 A review comment you have left three times is a missing skill. That is the loop.
 
@@ -217,6 +211,3 @@ Plugin: `claude plugin uninstall riptide@riptide`.
 
 Copy-in: delete `.claude/agents`, `.claude/skills` (the Riptide ones),
 `.claude/hooks`, and the Riptide blocks in `.claude/settings.json`.
-
-`INSIGHTS.md` is worth keeping either way — those are your project's notes, not
-Riptide's.

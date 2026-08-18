@@ -94,7 +94,7 @@ from §3.
 - Which journals were analysed (paths, deep or shallow).
 - Metrics per actor, plus totals.
 - The parallelism picture.
-- Insights → recommendations, each actionable.
+- Findings → recommendations, each actionable.
 - The ledger row appended.
 
 ## Hard rules

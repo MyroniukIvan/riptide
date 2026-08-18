@@ -23,8 +23,6 @@ noise instead of findings. "None documented." is an honest value.>
 
 ## Read when…
 
-- **`INSIGHTS.md`** (root, and the one nearest the code you are touching) —
-  before solving anything non-obvious. These are traps this project already hit.
 - **`docs/ARCHITECTURE.md`** — before moving code between modules.
 
 ## Workflow

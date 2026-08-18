@@ -31,7 +31,6 @@ Nothing is generated ahead of time. Agents read what already exists:
 | Package manager | the lockfile — `pnpm-lock.yaml`, `yarn.lock`, `bun.lock`, else npm |
 | Test conventions | the existing test files next to the code being changed |
 | Contracts | `CLAUDE.md` `## Contracts`, `docs/ARCHITECTURE.md`, `docs/adr/` |
-| Known traps | the nearest `INSIGHTS.md` |
 | Which skills apply to a path | each project skill's own `paths:` frontmatter |
 
 ## The steps
@@ -64,7 +63,7 @@ Choose the execution mode up front:
 
 ```
 branch → implementer waves (cap 3) → coverage gate → gap-fix (≤2)
-       → reviewer → arch-fix (≤3) → insights → hand off to /ship
+       → reviewer → arch-fix (≤3) → hand off to /ship
 ```
 
 Runs in the main session, because that is where questions can be asked and hooks
@@ -89,8 +88,7 @@ expensively and quietly.
 
 Splits the diff into buckets — UI, server, data, shared logic, tests, AI
 surfaces, config — reviews each in a parallel subagent, runs cross-cutting
-checks no single bucket can see, promotes anything matching a known
-`INSIGHTS.md` trap to CRITICAL, and returns one verdict.
+checks no single bucket can see, and returns one verdict.
 
 Blocks `gh pr create` on any CRITICAL. Plain `git push` flows freely — gating
 pushes trains people to bypass gates, and the moment that matters is PR-open.
@@ -111,7 +109,6 @@ turned into specific recommendations, appended to a trend ledger. See
 | `diagnose` | Something is broken, flaky, or slow and the cause is not obvious. Build a feedback loop before forming a theory. |
 | `tdd` | Building test-first, or turning a plan's test intents into real tests. |
 | `untangle` | A merge or rebase has stopped with conflicts. |
-| `insights` | Something non-obvious surfaced. Fires automatically at session end when the tree is dirty. |
 | `handoff` | Context is running out, or you are parking the work. |
 | `skill-forge` | Teaching the harness something project-specific. This is how Riptide specialises. |
 | `eval-harness` | The project ships an LLM feature. Paired with the `ai-reliability` agent. |

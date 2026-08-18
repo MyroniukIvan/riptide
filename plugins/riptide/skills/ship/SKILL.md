@@ -76,16 +76,7 @@ the skill, scope it with `paths:`, and it starts being consulted. See
 To override the table wholesale, create `.claude/riptide/buckets.md` with the
 same columns; if it exists, use it instead.
 
-### 4. Load the traps
-
-For each non-empty bucket, read the nearest `INSIGHTS.md` and extract only
-*What doesn't work*, *Recurring errors & fixes*, *Codebase patterns*, *Tool &
-library notes*. Pass that extract inline to the bucket's subagent.
-
-A finding that matches a known INSIGHTS entry is promoted to **CRITICAL** at
-aggregation — the project already paid for that lesson once.
-
-### 5. Dispatch parallel subagents
+### 4. Dispatch parallel subagents
 
 One `Explore` subagent per non-empty bucket. **All dispatches in a single
 message**, in waves of 3.
@@ -98,14 +89,13 @@ Each subagent gets:
 2. **A file budget** — over 20 files in a bucket, keep the 20 largest diffs and
    record the rest under `files_skipped_budget`. Never silently truncate.
 3. The **skill names** to consult — it loads them itself.
-4. The **INSIGHTS extract** from step 4.
-5. The **finding contract** and **severity definitions** below, verbatim.
-6. A **tooling-parity hint**: anything typecheck / lint / the test suite would
+4. The **finding contract** and **severity definitions** below, verbatim.
+5. A **tooling-parity hint**: anything typecheck / lint / the test suite would
    already catch gets `tool_would_catch: true` and is downgraded to INFO.
 
 Prompt template at the end of this file.
 
-### 6. Cross-cutting pass
+### 5. Cross-cutting pass
 
 Run these in the main session against the diff file list — no single bucket can
 see them. Add the project's own recurring mistakes to `CLAUDE.md` under
@@ -123,7 +113,7 @@ see them. Add the project's own recurring mistakes to `CLAUDE.md` under
 | A new test file whose name or location does not match its neighbours | HIGH |
 | `any`, `as unknown as`, or `@ts-expect-error` added without a comment explaining why | MEDIUM |
 
-### 7. Aggregate
+### 6. Aggregate
 
 Parse each bucket report against the contract. Valid → merge. Invalid → mark the
 bucket **incomplete** with the parse error.
@@ -139,15 +129,13 @@ Post-process, in this order:
    needs `rule`, `file`, `reason`, `expires`. Missing `expires` → entry rejected
    plus a LOW finding. Past `expires` → original severity kept, summary prefixed
    `[expired ignore]`.
-4. **INSIGHTS promotion** — a finding with a non-empty `insights_match` becomes
-   CRITICAL unless suppressed.
-5. `--strict` → HIGH becomes blocking too (verdict only, severity unchanged).
+4. `--strict` → HIGH becomes blocking too (verdict only, severity unchanged).
 
 **Any bucket incomplete → verdict is `BLOCK — incomplete review`**, whatever the
 counts say. A subagent that failed silently is indistinguishable from a clean
 bucket, and treating it as clean is how this gate stops meaning anything.
 
-### 8. Persist and rule
+### 7. Persist and rule
 
 Write the markdown report to `.claude/cache/ship/latest.md` and the machine
 artifact to `.claude/cache/ship/<hash>.json` — the top-level `verdict` key
@@ -193,8 +181,7 @@ Subagents return exactly one fenced `json` block:
       "summary": "Request body reaches the repository without validation.",
       "evidence_snippet": "+ const body = await req.json()\n+ return repo.create(body)",
       "suggested_fix": "Validate against the route's declared schema before line 44; reject on failure.",
-      "tool_would_catch": false,
-      "insights_match": "services/api/INSIGHTS.md#validate-at-the-edge"
+      "tool_would_catch": false
     }
   ]
 }
@@ -253,9 +240,6 @@ Hard rules:
 - An empty findings array is a valid answer. Do not pad.
 - Review only the changed regions shown. Do not open the whole file unless a
   finding genuinely requires the surrounding context.
-
-## Already-known traps — match these first, they promote to CRITICAL
-<INSIGHTS_EXTRACT>
 
 ## Files (diff fragments)
 ### <file>

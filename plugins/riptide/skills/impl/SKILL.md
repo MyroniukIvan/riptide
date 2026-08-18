@@ -1,6 +1,6 @@
 ---
 name: impl
-description: Execute an Implementation Plan end to end in the main session - feature branch, implementer waves per the DAG, a coverage gate, a capped gap-fix loop, structural review with a capped fix loop, insight capture, then hand off to /ship. Use to run a plan produced by /plan.
+description: Execute an Implementation Plan end to end in the main session - feature branch, implementer waves per the DAG, a coverage gate, a capped gap-fix loop, structural review with a capped fix loop, then hand off to /ship. Use to run a plan produced by /plan.
 disable-model-invocation: true
 argument-hint: "[docs/plans/<slug>.md]"
 allowed-tools: Read, Grep, Glob, Bash, Edit, Agent, Skill, AskUserQuestion
@@ -14,7 +14,7 @@ wrap this pipeline in a subagent.
 
 ```
 plan → branch → implementer waves (DAG, cap 3) → coverage gate (FIRST)
-     → gap-fix loop (≤2) → reviewer → arch-fix loop (≤3) → insights → /ship
+     → gap-fix loop (≤2) → reviewer → arch-fix loop (≤3) → /ship
 ```
 
 ## 0. Preflight
@@ -44,7 +44,7 @@ dependencies are complete.
   verify command. Also name the paths **other** tasks own, so "stop and report"
   beats improvisation.
 - Between waves, read each report for: files changed inside owned paths, verify
-  command green, handoff notes, insight candidates (collect for §5).
+  command green, handoff notes.
 
 **Sequential mode** — one implementer per step, in order, same prompt contract.
 The verify/review tail below is identical.
@@ -124,15 +124,7 @@ any of these:
 If the project has a TDD convention and the intents are worth authoring now,
 offer `/tdd` on the specific seams rather than writing tests blind.
 
-## 5. Insights — aggregate, write once
-
-Implementers report **Insight candidates**; they never write `INSIGHTS.md`
-themselves, because parallel instances collide on a file no task owns.
-
-Deduplicate the candidates, drop anything obvious from reading the code, then
-invoke `insights` **once, serially**.
-
-## 6. Terminal duties
+## 5. Terminal duties
 
 1. If the plan traces to a spec and coverage is ALL COVERED (modulo accepted
    descopes; DEFERRED does not block), flip the spec's status and update any
@@ -148,7 +140,6 @@ invoke `insights` **once, serially**.
 - **Structure** — verdict, fix-loop iterations, fixes applied with re-green
   evidence, accepted residual findings quoted verbatim.
 - **Manual checklist** — deferred intents, runtime criteria.
-- **Insights** — entries appended, or "none".
 - **Next** — `/ship`.
 
 ## Hard rules
@@ -159,5 +150,4 @@ invoke `insights` **once, serially**.
 4. **Gap-fix loop caps at 2; arch-fix loop caps at 3.** Then the user decides.
 5. **A failed task never fails silently** — §1 failure protocol, user decides.
 6. **No ownership improvisation.** Plan defects go back to `/plan`.
-7. **`INSIGHTS.md` is written once, here** — never by an implementer.
-8. **One plan per invocation.** Finish or abort before starting another.
+7. **One plan per invocation.** Finish or abort before starting another.

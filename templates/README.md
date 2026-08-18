@@ -6,7 +6,6 @@ Files `install.sh` seeds into a target repo, and that you can copy by hand.
 |---|---|---|
 | `settings.json` | `.claude/settings.json` | **Merge, don't copy over.** The `hooks` block is only for the copy-in install — as a plugin the hooks are already wired. |
 | `CLAUDE.md` | repo root | Two sections to add *after* running the built-in `/init`. A pointer map, not documentation. |
-| `INSIGHTS.md` | repo root | Seven empty sections. Module-level copies live beside the code they describe. |
 
 ## About the deny rules
 
